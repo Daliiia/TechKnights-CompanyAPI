@@ -21,8 +21,24 @@ NOTE:
 7-	After Running the project go to Postman to Make your requests 
 
 To insert company >> use POST Request with
-URL: https//localhost:8080/company
-Put your parameters in body section of Postman
+URL: https//127.0.0.1:8080/company/signup
+Put your parameters in parameter section of Postman
+parameters:
+c_Name,
+password,
+description,
+address,
+jobs.
 To update company >> use PUT request with
-URL: https//localhost:8080/company
+URL: https//127.0.0.1:8080/company/update
+parameters:
+c_Name
 To delete company >> DELETE Request
+URL: https//127.0.0.1:8080/company/deleteaccount
+parameters:
+c_Name
+To login USE >> GET request
+URL: https//127.0.0.1:8080/company/login
+parameters:
+c_Name
+password 
