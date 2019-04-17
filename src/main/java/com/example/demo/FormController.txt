@@ -1,0 +1,59 @@
+package com.example.demo.Controllers;
+
+
+import com.example.demo.Entities.FormEntity;
+import com.example.demo.Repos.FormReposatory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/form")
+public class FormController {
+
+    /**
+     *
+     */
+   @Autowired
+    private FormReposatory formrepo;
+    @DeleteMapping("/deleteform")
+    @ResponseBody
+    /**
+     * Get all forms list.
+     *
+     * @return the list
+     */
+
+    @GetMapping("/forms")
+    public List<FormEntity> getAllCompanies() {
+        return formrepo.findAll();
+
+    }
+
+    @DeleteMapping("/deleteform")
+    @ResponseBody
+    public String deleteform(@RequestParam("id") String id) {
+        FormEntity form = new FormEntity();
+        List<FormEntity> forms = getAllForms();
+        for (int i = 0; i < forms.size(); i++) {
+            if (forms.get(i).getC_Name().equals(id)) {
+                form = forms.get(i);
+                break;
+            }
+        }
+        formrepo.delete(form);
+        return  " form deleted successfully :)";
+    }
+
+    @RequestMapping(value = "/MakeForm", method = RequestMethod.POST)
+    @ResponseBody
+    public FormEntity MakeForm(@RequestParam("Question") String question, @RequestParam("Answer") String Ans) {
+        FormEntity form  = new FormEntity(question,Ans);
+        return FormReposatory.save(form);
+    }
+
+
+}
