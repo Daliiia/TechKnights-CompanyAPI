@@ -2,39 +2,60 @@ package com.example.demo;
 
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
-
-
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import javax.persistence.*;
-import java.util.Date;
-import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
-@Table(name="model.Company")
+@Table(name="company")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
-    @Column(name = "C_Name", nullable = false)
-    private String C_Name;
+    @Column(name = "Name")
+    private String Name;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "pass", nullable = false)
+    @Column(name = "pass")
     private String pass;
 
-    @Column(name = "Jobs", nullable = false)
+    @Column(name = "Jobs")
     private String Jobs;
+
+
+    public Company(String c_Name, String pass, String description, String jobs, String address){
+        this.setName(c_Name);
+        this.setPassword(pass);
+        this.setAddress(address);
+        this.setDescription(description);
+        this.setJobs(jobs);
+    }
+    public Company(){}
+
+public  Company(String Name,String pass){
+        this.setName(Name);
+        this.setPassword(pass);
+}
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+/*
+    public void setForms(List <Form> forms) {
+        this.forms =  forms;
+    }
+    */
 
    /* @Column(name = "created_at", nullable = false)
     @CreatedDate
@@ -66,13 +87,9 @@ public class Company {
         Jobs = jobs;
     }
 
-    public String getC_Name() {
-        return C_Name;
-    }
 
-    public void setC_Name(String c_Name) {
-        C_Name = c_Name;
-    }
+
+
 
     public String getPassword() {
         return pass;
