@@ -1,59 +1,143 @@
-package com.example.demo.Controllers;
+package com.example.demo;
 
-
-import com.example.demo.Entities.FormEntity;
-import com.example.demo.Repos.FormReposatory;
+import com.example.demo.Company;
+import com.example.demo.Form;
+import com.example.demo.FormRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/form")
 public class FormController {
+    @Autowired
+    FormRepository formRepository;
 
-    /**
-     *
-     */
-   @Autowired
-    private FormReposatory formrepo;
-    @DeleteMapping("/deleteform")
-    @ResponseBody
-    /**
-     * Get all forms list.
-     *
-     * @return the list
-     */
+    //@Autowired
+    //CompanyRepository companyRepository;
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public List<Form> getAllForms(){
+        return formRepository.findAll();
 
-    @GetMapping("/forms")
-    public List<FormEntity> getAllCompanies() {
-        return formrepo.findAll();
+    }
+    @RequestMapping(value = "/getform",method = RequestMethod.GET)
+    public Optional<Form> getForm(@RequestParam(value = "FromID")long id){
+       return   formRepository.findById(id);
+
+    }
+    @RequestMapping(value = "/getcompanyforms",method = RequestMethod.GET)
+    public List<Form> getFormForCompany(@RequestParam("Name")String name ){
+        List<Form> forms = formRepository.findAll();
+        List<Form> fRepo=formRepository.findAll();
+        long id = -1;
+        CompanyController controller = new CompanyController();
+        List<Company> cRepo=controller.getAllCompanies();
+        for(int i=0;i<cRepo.size();i++){
+            if(cRepo.get(i).getName().equals(name)){
+                id=cRepo.get(i).getId();
+                break;
+            }
+
+        }
+        forms.clear();
+
+        for(int i=0;i<fRepo.size();i++){
+            if(id==fRepo.get(i).getId()&&fRepo.get(i).original==false){
+                forms.add(fRepo.get(i));
+            }
+
+        }
+    return forms;
 
     }
 
-    @DeleteMapping("/deleteform")
-    @ResponseBody
-    public String deleteform(@RequestParam("id") String id) {
-        FormEntity form = new FormEntity();
-        List<FormEntity> forms = getAllForms();
-        for (int i = 0; i < forms.size(); i++) {
-            if (forms.get(i).getC_Name().equals(id)) {
-                form = forms.get(i);
+    @RequestMapping(value = "/makeform",method = RequestMethod.POST)
+    public ResponseEntity<Form> MakeForm(@RequestParam(value = "applicant_name")String name,
+                                         @RequestParam(value = "applicant_phone")String phone,
+                                         @RequestParam(value = "applicant_email")String email,
+                                         @RequestParam(value = "education")String education,
+                                         @RequestParam(value = "field")String field,
+                                         @RequestParam(value = "skills")String skills,
+                                         @RequestParam(value = "why")String why,
+                                         @RequestParam(value = "Name")String cName){
+
+        CompanyController controller = new CompanyController();
+        List <Company> companies =controller.getAllCompanies();
+        Form form=new Form();
+        form=form.QuestionForm(name,phone,email,education,skills,why,field,true);
+
+
+
+        int index=0;
+        for(int i=0;i<companies.size();i++){
+            if(companies.get(i).getName().equals(cName)){
+                index=i;
+                break;
+
+            }
+        }
+        form.setId(companies.get(index).getId());
+
+
+        formRepository.save(form);
+        return ResponseEntity.ok().body(form);
+
+    }
+    @RequestMapping(value = "/fillform",method = RequestMethod.PUT)
+    public ResponseEntity<Form>FillForm(@RequestParam(value = "nameAns")String name,
+                                        @RequestParam(value = "phoneAns")String phone,
+                                        @RequestParam(value = "emailAns")String email,
+                                        @RequestParam(value = "educationAns")String education,
+                                        @RequestParam(value = "fieldAns")String field,
+                                        @RequestParam(value = "skillsAns")String skills,
+                                        @RequestParam(value = "whyAns")String why,
+                                        @RequestParam(value = "name")String cName){
+
+        CompanyController controller = new CompanyController();
+        List <Company> companies =controller.getAllCompanies();
+        int Cindex=0,Findex=0;
+
+        Form form=new Form();
+
+
+
+        for(int i=0;i<companies.size();i++){
+            if(companies.get(i).getName().equals(cName)){
+                Cindex=i;
                 break;
             }
         }
-        formrepo.delete(form);
-        return  " form deleted successfully :)";
+        List<Form> forms=formRepository.findAll();
+        if(Cindex!=-1) {
+            for (int i = 0; i < forms.size(); i++) {
+                if (forms.get(i).original == true) {
+                    form.setApplicantName(forms.get(i).getApplicantName());
+                    form.setApplicantPhone(forms.get(i).getApplicantPhone());
+                    form.setApplicantEmail(forms.get(i).getApplicantEmail());
+                    form.setEducation(forms.get(i).getEducation());
+                    form.setField(forms.get(i).getField());
+                    form.setSkills(forms.get(i).getSkills());
+                    form.setWhy(forms.get(i).getWhy());
+                    form.setId(forms.get(i).getId());
+                    break;
+                }
+
+            }
+
+            form.AnswerForm(name, phone, email, education, skills, why, field);
+            form.original=false;
+
+            formRepository.save(form);
+        }
+
+
+        return ResponseEntity.ok().body(form);
+
     }
-
-    @RequestMapping(value = "/MakeForm", method = RequestMethod.POST)
-    @ResponseBody
-    public FormEntity MakeForm(@RequestParam("Question") String question, @RequestParam("Answer") String Ans) {
-        FormEntity form  = new FormEntity(question,Ans);
-        return FormReposatory.save(form);
-    }
-
-
 }
