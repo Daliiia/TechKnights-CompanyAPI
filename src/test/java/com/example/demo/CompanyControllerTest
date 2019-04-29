@@ -1,0 +1,101 @@
+
+package com.example.demo;
+
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RunWith(SpringRunner.class)
+@WebMvcTest(value = CompanyController.class,secure = false)
+public class CompanyControllerTest {
+
+	@Autowired
+	private MockMvc mockMvc;
+	@MockBean
+	private CompanyRepository companyRepository;
+	@MockBean
+	private Company company;
+
+
+
+	@Test
+	public void loginTest() throws Exception {
+		String uri = "http://127.0.0.1:8080/company/login";
+
+		try {
+			mockMvc.perform(MockMvcRequestBuilders.get(uri+"?Name=Vodafone"+"&password=12345")).andExpect(status().isOk());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void getAllCompaniesTest(){
+		String uri = "http://127.0.0.1:8080/company/all";
+		try {
+			mockMvc.perform(MockMvcRequestBuilders.get(uri)).andExpect(status().isOk());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public  void signUpTest(){
+		String uri = "http://127.0.0.1:8080/company/signup";
+		try {
+			mockMvc.perform(MockMvcRequestBuilders.post(uri+"?Name=Orange"+"&password=1234"+"&jobs=Data scientist - It engineer"+"&description=networks"+"&address=smart village")).andExpect(status().isOk());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test
+	public void updateUserTest(){
+		String uri = "http://127.0.0.1:8080/company/update";
+		try {
+			mockMvc.perform(MockMvcRequestBuilders.put(uri+"?Name=Vodafone"+"&password=12345"+"&address=h village :>"+"&jobs=IT engineer "+"&description=networks")).andExpect(status().isBadRequest());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test
+	public void deleteUserTest(){
+		String uri = "http://127.0.0.1:8080/company/deleteaccount";
+		try {
+			mockMvc.perform(MockMvcRequestBuilders.delete(uri+"?Name=Vodafone")).andExpect(status().isOk());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}
+
+
