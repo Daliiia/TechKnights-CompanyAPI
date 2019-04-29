@@ -1,0 +1,105 @@
+package com.example.demo;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RunWith(SpringRunner.class)
+@WebMvcTest(value = FormController.class,secure = false)
+public class FormControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private FormRepository formRepository;
+    @MockBean
+    private Form form;
+
+    @Test
+    public void getAllFormsTest() {
+        String uri = "http://127.0.0.1:8080/form/all";
+
+
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get(uri)).andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void getFormTest() {
+        String uri = "http://127.0.0.1:8080/form/getform";
+
+
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get(uri + "?FromID=1")).andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void getFormForCompanyTest() {
+        String uri = "http://127.0.0.1:8080/form/getcompanyforms";
+
+
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get(uri + "?Name=Vodafone")).andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void MakeFormTest() {
+        String uri = "http://127.0.0.1:8080/form/makeform";
+
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.post(uri + "?Name=Vodafone" +
+                    "&applicant_name=your name " +
+                    "&applicant_phone=phone?" +
+                    "&applicant_email=email?" +
+                    "&education= your certificate  in courses you get , education " +
+                    "&field=field you are intersested in" +
+                    "&skills=your technical skills related to the feild you're intersted in " +
+                    "&why=why did you apply for a job in Vodafone ?")).andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void FillFormTest() {
+        String uri = "http://127.0.0.1:8080/form/fillform";
+
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.put(uri + "?name=Vodafone" +
+                    "&nameAns=Dalia " +
+                    "&phoneAns=000000000000000" +
+                    "&emailAns=d.ahmed" +
+                    "&educationAns=FCI" +
+                    "&fieldAns=Data science " +
+                    "&skillsAns=problem solving " +
+                    "&whyAns=learn about data science field ")).andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+}
