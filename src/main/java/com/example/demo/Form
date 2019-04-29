@@ -1,0 +1,224 @@
+package com.example.demo;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name="form")
+public class Form {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    long FormID;
+
+    //@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //@JoinColumn(name = "company_id", nullable = false)
+    //@OnDelete(action = OnDeleteAction.CASCADE)
+    @Column(name = "id",nullable = false)
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
+    @Column(name = "applicantName")
+    String applicantName;
+    @Column(name = "nameAns")
+    String 	nameAns;
+    @Column(name = "applicantPhone")
+    String applicantPhone;
+    @Column(name = "phoneAns")
+    String phoneAns;
+    @Column(name= "applicantEmail")
+    String applicantEmail;
+    @Column(name = "emailAns")
+    String 	emailAns;
+    @Column(name = "education")
+    String 	education;
+    @Column(name = "educationAns")
+    String educationAns;
+    @Column(name = "field")
+    String field;
+    @Column(name = "skills")
+    String skills;
+    @Column(name = "skillsAns")
+    String 	skillsAns;
+    @Column(name = "why")
+    String why;
+    @Column(name = "whyAns")
+    String whyAns;
+    @Column(name = "fieldAns")
+    String fieldAns;
+    @Column(name = "original")
+    public
+    boolean original=false;
+
+    public boolean isOriginal() {
+        return original;
+    }
+
+    public void setOriginal(boolean original) {
+        this.original = original;
+    }
+
+    public String getFieldAns() {
+        return fieldAns;
+    }
+
+    public void setFieldAns(String fieldAns) {
+        this.fieldAns = fieldAns;
+    }
+
+    public Form QuestionForm(String name, String phone, String email, String education, String skills, String why, String field,boolean original){
+        this.applicantName=name;
+        this.applicantPhone=phone;
+        this.applicantEmail=email;
+        this.education=education;
+        this.skills=skills;
+        this.why=why;
+        this.field=field;
+        this.original=original;
+        return this;
+    }
+    public Form AnswerForm(String name,String phone,String email,String education,String skills,String why,String field){
+        this.nameAns=name;
+        this.phoneAns=phone;
+        this.emailAns=email;
+        this.educationAns=education;
+        this.skillsAns=skills;
+        this.whyAns=why;
+        this.fieldAns=field;
+        return  this;
+
+    }
+
+    public String getWhy() {
+        return why;
+    }
+
+    public String getWhyAns() {
+        return whyAns;
+    }
+
+    public void setWhyAns(String whyAns) {
+        this.whyAns = whyAns;
+    }
+
+    public void setWhy(String why) {
+        this.why = why;
+    }
+
+    public String getSkillsAns() {
+        return skillsAns;
+    }
+
+    public void setSkillsAns(String skillsAns) {
+        this.skillsAns = skillsAns;
+    }
+
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
+
+    public long getFormID() {
+        return FormID;
+    }
+
+    public String getNameAns() {
+        return nameAns;
+    }
+
+    public String getPhoneAns() {
+        return phoneAns;
+    }
+
+    public void setPhoneAns(String phoneAns) {
+        this.phoneAns = phoneAns;
+    }
+
+    public void setNameAns(String nameAns) {
+        this.nameAns = nameAns;
+    }
+
+    public void setFormID(long formID) {
+        FormID = formID;
+    }
+
+    public String getFiledAns() {
+        return fieldAns;
+    }
+
+    public void setFiledAns(String filedAns) {
+        this.fieldAns = filedAns;
+    }
+
+    public String getEmailAns() {
+        return emailAns;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public void setField(String field) {
+        this.field = field;
+    }
+
+    public void setEmailAns(String emailAns) {
+        this.emailAns = emailAns;
+    }
+
+    public String getApplicantPhone() {
+        return applicantPhone;
+    }
+
+    public void setApplicantPhone(String applicantPhone) {
+        this.applicantPhone = applicantPhone;
+    }
+
+    public String getEducationAns() {
+        return educationAns;
+    }
+
+    public void setEducationAns(String educationAns) {
+        this.educationAns = educationAns;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+
+
+
+    public String getApplicantName() {
+        return applicantName;
+    }
+
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
+    }
+
+    public String getApplicantEmail() {
+        return applicantEmail;
+    }
+
+    public void setApplicantEmail(String applicantEmail) {
+        this.applicantEmail = applicantEmail;
+    }
+
+
+
+
+}
