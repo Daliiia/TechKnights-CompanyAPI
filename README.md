@@ -13,9 +13,9 @@ ________________________________________________________________________________
 NOTE:
 - you have to make sure that no other processes use port number 8080
 - open your command line in PC 
-- run “findstr 8080” command
+- run “netstat -ano | findstr :yourPortNumber” command
 - if the response was empty then no processes use this port 
-- if any , use “taskkill /F /PID” and the process id which is shown to u in your terminal.
+- if any , use “taskkill /PID typeyourPIDhere /F” and the process id which is shown to u in your terminal.
 ________________________________________________________________________________________________________________________________________
 
 6-	Run project as follows:
